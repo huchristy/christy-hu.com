@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crstid Signs — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Caveat:wght@700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <title>Christy Hu — Coming Soon</title>
+  <meta name="description" content="Christy Hu is a Product Designer with 3 years of experience. Coming soon at christy-hu.com."/>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-167785635"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-167785635');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,19 +23,14 @@
       --bg: #ffffff;
       --ink: #0d0d0d;
       --muted: #aaaaaa;
-      --rule: #d8d8d8;
       --pad: 32px;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-    }
+    html, body { height: 100%; background: var(--bg); color: var(--ink); }
 
     body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -40,12 +46,15 @@
     }
 
     .logo {
-      font-family: 'Caveat', cursive;
-      font-weight: 700;
-      font-size: 52px;
-      line-height: 1;
-      color: var(--ink);
-      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+      /* Remove the beige background — show just the black mark */
+      mix-blend-mode: multiply;
     }
 
     .header-bio {
@@ -66,7 +75,7 @@
     }
 
     .headline {
-      font-family: 'DM Serif Display', serif;
+      font-family: 'Inter', sans-serif;
       font-size: clamp(36px, 5.5vw, 68px);
       font-weight: 400;
       line-height: 1.18;
@@ -74,12 +83,11 @@
       max-width: 560px;
       text-align: left;
       padding-bottom: 48px;
+      letter-spacing: -0.02em;
     }
 
     /* ── FOOTER / EMAIL ── */
-    footer {
-      border-top: 1px solid var(--ink);
-    }
+    footer { border-top: 1px solid var(--ink); }
 
     .email-row {
       display: grid;
@@ -93,22 +101,20 @@
       background: transparent;
       border: none;
       outline: none;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-weight: 300;
       font-size: 22px;
       color: var(--ink);
       width: 100%;
     }
-    .email-row input::placeholder {
-      color: var(--muted);
-    }
+    .email-row input::placeholder { color: var(--muted); }
 
     .notify-btn {
       background: none;
       border: none;
       cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
       font-size: 22px;
       color: var(--ink);
       white-space: nowrap;
@@ -116,22 +122,37 @@
       transition: opacity 0.2s;
     }
     .notify-btn:hover { opacity: 0.4; }
-    .notify-btn.done  { opacity: 0.4; cursor: default; }
+    .notify-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .form-feedback {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      padding: 10px var(--pad) 0;
+      min-height: 28px;
+    }
+
+    @media (max-width: 600px) {
+      header { grid-template-columns: 1fr; gap: 16px; }
+      .headline { font-size: clamp(32px, 9vw, 52px); }
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">crstid</div>
+    <div class="logo">
+      <img src="hu_logo.png" alt="hu logo"/>
+    </div>
     <p class="header-bio">
-      Crstid Signs is a design studio crafting thoughtful visual identities.<br/>
-      Currently rebuilding at <a href="https://christy-hu.com" style="color:inherit;">christy-hu.com</a>.
+      Christy Hu is a Product Designer with 3 years of experience.<br/>
+      She's currently designing for growth system for the iOS Google search app.
     </p>
   </header>
 
   <main>
     <h1 class="headline">
-      Taking the time<br/>to get it right.<br/>Come back later.
+      She's vibe coding her latest version<br/>of portfolio. Come back later.
     </h1>
   </main>
 
@@ -145,24 +166,58 @@
       />
       <button class="notify-btn" id="notifyBtn" onclick="handleNotify()">Notify me</button>
     </div>
+    <div class="form-feedback" id="feedback"></div>
   </footer>
 
   <script>
-    function handleNotify() {
-      const input = document.getElementById('emailInput');
-      const btn   = document.getElementById('notifyBtn');
-      if (!input.value || !input.value.includes('@')) {
+    async function handleNotify() {
+      const input    = document.getElementById('emailInput');
+      const btn      = document.getElementById('notifyBtn');
+      const feedback = document.getElementById('feedback');
+      const email    = input.value.trim();
+
+      if (!email || !email.includes('@')) {
         input.placeholder = 'Enter a valid email';
         setTimeout(() => { input.placeholder = 'Your email'; }, 2000);
         return;
       }
-      input.value = '';
-      input.placeholder = "You're on the list.";
-      input.disabled = true;
-      btn.textContent = 'Done';
-      btn.classList.add('done');
+
       btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      gtag('event', 'notify_me_signup', {
+        event_category: 'engagement',
+        event_label: 'email_signup'
+      });
+
+      try {
+        const res = await fetch('https://formspree.io/f/xgonvkgr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        if (res.ok) {
+          input.value = '';
+          input.disabled = true;
+          input.placeholder = "You're on the list.";
+          btn.textContent = 'Done';
+          feedback.textContent = "We'll reach out when we're ready.";
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Notify me';
+          feedback.textContent = 'Something went wrong. Please try again.';
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Notify me';
+        feedback.textContent = 'Connection error. Please try again.';
+      }
     }
+
+    document.getElementById('emailInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleNotify();
+    });
   </script>
 
 </body>
