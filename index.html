@@ -15,7 +15,7 @@
     gtag('config', 'G-167785635');
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,46 +45,54 @@
       border-bottom: 1px solid var(--ink);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
     .logo img {
       height: 60px;
       width: auto;
-      /* Remove the beige background — show just the black mark */
-      mix-blend-mode: multiply;
     }
 
     .header-bio {
-      font-size: 13.5px;
+      font-size: clamp(13px, 1.1vw, 16px);
       line-height: 1.65;
       color: var(--ink);
       font-weight: 400;
-      padding-top: 4px;
+      text-align: left;
     }
 
     /* ── MAIN ── */
     main {
       flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .main-left { /* empty left column */ }
+
+    .main-right {
       display: flex;
       align-items: flex-end;
-      justify-content: flex-end;
       padding: var(--pad);
     }
 
     .headline {
       font-family: 'Inter', sans-serif;
-      font-size: clamp(36px, 5.5vw, 68px);
+      font-size: clamp(22px, 2.8vw, 42px);
       font-weight: 400;
-      line-height: 1.18;
+      line-height: 1.2;
       color: var(--ink);
-      max-width: 560px;
       text-align: left;
       padding-bottom: 48px;
       letter-spacing: -0.02em;
     }
+
+    .headline a {
+      color: var(--ink);
+      font-style: italic;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+      transition: opacity 0.2s;
+    }
+    .headline a:hover { opacity: 0.4; }
 
     /* ── FOOTER / EMAIL ── */
     footer { border-top: 1px solid var(--ink); }
@@ -114,7 +122,7 @@
       border: none;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-weight: 500;
+      font-weight: 400;
       font-size: 22px;
       color: var(--ink);
       white-space: nowrap;
@@ -134,7 +142,9 @@
 
     @media (max-width: 600px) {
       header { grid-template-columns: 1fr; gap: 16px; }
-      .headline { font-size: clamp(32px, 9vw, 52px); }
+      main { grid-template-columns: 1fr; }
+      .main-left { display: none; }
+      .headline { font-size: clamp(20px, 6vw, 32px); }
     }
   </style>
 </head>
@@ -145,15 +155,19 @@
       <img src="hu_logo.png" alt="hu logo"/>
     </div>
     <p class="header-bio">
-      Christy Hu is a Product Designer with 3 years of experience.<br/>
-      She's currently designing for growth system for the iOS Google search app.
+      I'm a Product Designer with 3 years of experience,<br/>
+      currently designing growth systems for the iOS Google search app.
     </p>
   </header>
 
   <main>
-    <h1 class="headline">
-      She's vibe coding her latest version<br/>of portfolio. Come back later.
-    </h1>
+    <div class="main-left"></div>
+    <div class="main-right">
+      <h1 class="headline">
+        New website in the works.<br/>
+        Find me on <a href="https://www.linkedin.com/in/christy-hu" target="_blank">LinkedIn</a> in the meantime.
+      </h1>
+    </div>
   </main>
 
   <footer>
@@ -164,7 +178,7 @@
         placeholder="Your email"
         autocomplete="off"
       />
-      <button class="notify-btn" id="notifyBtn" onclick="handleNotify()">Notify me</button>
+      <button class="notify-btn" id="notifyBtn" onclick="handleNotify()">Notify me when live</button>
     </div>
     <div class="form-feedback" id="feedback"></div>
   </footer>
@@ -202,15 +216,15 @@
           input.disabled = true;
           input.placeholder = "You're on the list.";
           btn.textContent = 'Done';
-          feedback.textContent = "We'll reach out when we're ready.";
+          feedback.textContent = "I'll reach out as soon as it's ready.";
         } else {
           btn.disabled = false;
-          btn.textContent = 'Notify me';
+          btn.textContent = 'Notify me when live';
           feedback.textContent = 'Something went wrong. Please try again.';
         }
       } catch (e) {
         btn.disabled = false;
-        btn.textContent = 'Notify me';
+        btn.textContent = 'Notify me when live';
         feedback.textContent = 'Connection error. Please try again.';
       }
     }
